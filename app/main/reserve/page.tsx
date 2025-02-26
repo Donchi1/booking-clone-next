@@ -43,7 +43,7 @@ export default function ReservePage() {
 
 
   // Fetch rooms data (replace with your actual data fetching method)
-  const { data: rooms, isLoading } = useFetch<Room[]>(`/api/routes/hotels/getRooms?hotelId=${hotelId}`, 
+  const { data: rooms, isLoading, error } = useFetch<Room[]>(`/api/routes/hotels/getRooms?hotelId=${hotelId}`, 
     {enabled: !!hotelId, queryKey: ['hotelRooms', hotelId || ""]}
   );
 
@@ -64,8 +64,10 @@ export default function ReservePage() {
 
   if (isLoading) return <Loader />
 
+  if(error) return <div className="text-center text-red-500 py-8">Error: {error.message}</div>
+
   return (
-    <Suspense>
+    <Suspense fallback={<Loader />}>
       <Navbar />
       <section className="container mx-auto px-4 mb-8">
         <div className="w-full">
