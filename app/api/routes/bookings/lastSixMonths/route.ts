@@ -1,5 +1,5 @@
 // app/api/routes/bookings/lastSixMonths.ts
-import { requireAdmin } from "@/app/api/utils/verifyToken.js";
+import { requireAdmin } from "@/app/api/utils/verifyToken";
 import Booking from "@/app/api/models/BookingOrder";
 import { NextResponse } from 'next/server';
 
