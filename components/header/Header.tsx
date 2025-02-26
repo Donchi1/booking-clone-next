@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Bed,
   Plane,
@@ -32,26 +32,26 @@ const navigationItems = [
 export default function Header({ type = "default" }) {
   const router = useRouter()
 
-  const {destination,dates,options} = useSearchStore()
+  const {destination,dates,options, setDestination, setDates, setOptions } = useSearchStore()
 
-  const [localDestination, setLocalDestination] = useState(destination || "")
+  // const [localDestination, setLocalDestination] = useState(destination || "")
 
-  const [localDates, setLocalDates] = useState({
-    from: dates.length > 0 ? dates[0].from : new Date(),
-    to: dates.length > 0 ? dates[0].to : new Date()
-  } as DateRange)
+  // const [localDates, setLocalDates] = useState({
+  //   from:  dates[0].from ,
+  //   to: dates[0].to 
+  // } as DateRange)
+
 
   const [guests, setGuests] = useState(options)
-
 
 
   const handleSearch = (e: React.FormEvent) => {
        e.preventDefault()
       // Create URLSearchParams with search data
       const searchParams = new URLSearchParams({
-        destination: localDestination!,
-        dates: JSON.stringify(localDates),
-        options: JSON.stringify(guests),
+        destination: destination!,
+        dates: JSON.stringify(dates),
+        options: JSON.stringify(options),
       });
     router.push(`/main/lists?${searchParams.toString()}`);
   }
@@ -60,14 +60,22 @@ export default function Header({ type = "default" }) {
 
 
 const handleGuestChange = (type: 'adults' | 'children' | 'rooms', operation: 'increase' | 'decrease') => {
-    setGuests(prev => ({
-      ...prev,
+    setOptions({
+      ...options,
       [type]: operation === 'increase'
-        ? prev[type] + 1
-        : Math.max(type === 'adults' ? 1 : 0, prev[type] - 1)
-    }))
+        ? options[type] + 1
+        : Math.max(type === 'adults' ? 1 : 0, options[type] - 1)
+    })
   }
 
+  // useEffect(() => {
+  //   setGuests(options)
+  //   setLocalDates({
+  //     from:  dates[0].from ,
+  //     to: dates[0].to 
+  //   })
+  //   setLocalDestination(destination || "")
+  // }, [options, destination, dates])
 
   return (
     <header className={`bg-gradient-to-r from-blue-600 to-purple-600 text-white ${type === "default" ? "py-12" : "md:pt-0 pt-4 pb-4" }`}>
@@ -111,16 +119,16 @@ const handleGuestChange = (type: 'adults' | 'children' | 'rooms', operation: 'in
                   required
                   placeholder="Where are you going?"
                   className=" text-primary-gray border-none outline-none  focus:!ring-0 rounded-none placeholder-gray-600/85"
-                  value={localDestination}
-                  onChange={(e) => setLocalDestination(e.target.value)}
+                  value={destination}
+                  onChange={(e) => setDestination(e.target.value)}
                 />
               </div>
 
               {/* Date Picker*/}
-              <DatePickerRange dates={localDates} onChange={(item) => setLocalDates(item!)} />
+              <DatePickerRange dates={dates[0]} onChange={(item) => setDates([item!])} />
            
 
-             <GuestSelector guests={guests} onGuestChange={(key, value) => handleGuestChange(key, value)} />
+             <GuestSelector guests={options} onGuestChange={(key, value) => handleGuestChange(key, value)} />
             </div>
 
             {/* Search Button */}

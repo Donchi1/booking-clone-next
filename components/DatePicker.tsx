@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { addDays, format } from "date-fns"
+import { format } from "date-fns"
 import { CalendarIcon } from "lucide-react"
 import { DateRange, SelectRangeEventHandler } from "react-day-picker"
 
@@ -14,10 +14,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 
-interface Range {
-  from: Date;
-  to: Date;
-}
 
 export function DatePickerRange({
   className,
@@ -66,8 +62,9 @@ export function DatePickerRange({
             initialFocus
             mode="range"
             defaultMonth={new Date()}
-            selected={dates}
+            selected={dates || {from: new Date(), to: new Date()}}
             min={2}
+            
             fromDate={new Date()}
             onSelect={onChange}
             numberOfMonths={2}

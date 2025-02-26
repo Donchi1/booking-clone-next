@@ -36,7 +36,15 @@ export const useSearchStore = create<SearchState>()(
     }),
     {
       name: 'search-storage',
-      storage: createJSONStorage(() => localStorage)
+      storage: createJSONStorage(() => localStorage),
+      merge: (persisted, latest) => ({
+        ...latest,
+        dates: latest.dates.map((date, index) => ({
+          ...date,
+          from: new Date(date.from!),
+          to: new Date(date.to!)
+        }))
+      })
     }
   )
 );

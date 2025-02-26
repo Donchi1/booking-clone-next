@@ -1,7 +1,7 @@
 'use client';
 export const dynamic = 'force-dynamic'
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
@@ -63,6 +63,8 @@ export default function Lists() {
 
 
     return (
+        <Suspense>
+
         <div className="min-h-screen bg-gray-50">
             <Navbar />
             <Header type='list' />
@@ -99,5 +101,6 @@ export default function Lists() {
             <MailList />
             <Footer />
         </div>
+        </Suspense>
     );
 }

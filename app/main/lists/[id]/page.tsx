@@ -67,8 +67,8 @@ export default function HotelPage() {
   // Calculate days and total price
   const days = dates?.length > 0
     ? differenceInDays(
-      dates[0].to!,
-      dates[0].from!
+      dates[0].to! || new Date().toISOString(),
+      dates[0].from! || new Date().toISOString()
     )
     : 0;
 

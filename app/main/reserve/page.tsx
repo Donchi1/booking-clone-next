@@ -1,7 +1,7 @@
 'use client';
 export const dynamic = 'force-dynamic'
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -43,7 +43,9 @@ export default function ReservePage() {
 
 
   // Fetch rooms data (replace with your actual data fetching method)
-  const { data: rooms, isLoading } = useFetch<Room[]>(`/api/routes/hotels/getRooms?hotelId=${hotelId}`);
+  const { data: rooms, isLoading } = useFetch<Room[]>(`/api/routes/hotels/getRooms?hotelId=${hotelId}`, 
+    {enabled: !!hotelId, queryKey: ['hotelRooms', hotelId || ""]}
+  );
 
   const { selectedRooms, handleSelect, isAvailable, availableDates, selectedRoomNumbers, getRooms } = useRoomInfo(rooms as RoomType[]);
   // Open payment modal
@@ -63,7 +65,7 @@ export default function ReservePage() {
   if (isLoading) return <Loader />
 
   return (
-    <>
+    <Suspense>
       <Navbar />
       <section className="container mx-auto px-4 mb-8">
         <div className="w-full">
@@ -145,6 +147,6 @@ export default function ReservePage() {
           selectedRoomNumbers={selectedRoomNumbers}
         />
       )}
-    </>
+    </Suspense>
   );
 }
