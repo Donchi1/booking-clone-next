@@ -11,9 +11,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useAuthStore } from '@/store/AuthStore'
 import { Edit, Save, LogOut, Camera, Loader2 } from 'lucide-react'
-import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import Navbar from '@/components/navbar/Navbar'
 import { useLogout } from '@/utils/hooks/auth/useLogout'
 import Link from 'next/link'
@@ -33,7 +31,6 @@ const profileSchema = z.object({
 
 export default function ProfilePage() {
     const { currentUser, setCurrentUser } = useAuthStore()
-    const router = useRouter()
     const [isEditing, setIsEditing] = useState(false)
     const { mutateAsync, isPending } = useLogout()
     const { mutateAsync: updateUser, isPending: updatePending } = useUserAction("update")

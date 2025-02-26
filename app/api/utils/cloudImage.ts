@@ -1,12 +1,12 @@
-import { DeleteApiResponse, UploadApiResponse, v2 } from "cloudinary";
+import {  UploadApiResponse, v2 } from "cloudinary";
 import { CloudImageInfo, CloudImageDeleteResult } from "./types";
 
 // Configure Cloudinary
 const cloudinary = v2;
 cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME || "donny12",
-  api_key: process.env.API_KEY || "356334839991679",
-  api_secret: process.env.API_SECRET || "gDkF1r2xFX9ZmUfm8-R-dOtaUXU",
+  cloud_name: process.env.CLOUD_NAME || "",
+  api_key: process.env.API_KEY || "",
+  api_secret: process.env.API_SECRET || "",
 });
 
 // Utility function to convert File to Buffer
@@ -71,7 +71,7 @@ export const imageUploader = async (file: File): Promise<CloudImageInfo> => {
 
 // Delete multiple images
 export const imageDeleteMultiple = async (
-  filesForDelete: UploadApiResponse[]
+  filesForDelete: {public_id: string}[]
 ): Promise<CloudImageDeleteResult> => {
   try {
     const deleteResults:{result: string}[] = await Promise.all(

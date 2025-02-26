@@ -1,9 +1,7 @@
 "use client"
 
 import React, { useState } from 'react'
-import { Button } from './ui/button'
 import { HotelType, SearchFilterParams } from '@/utils/types/hotel'
-import { QueryObserverResult, RefetchOptions } from '@tanstack/react-query'
 import { Slider } from './ui/slider'
 import { Separator } from './ui/separator'
 import { Checkbox } from './ui/checkbox'

@@ -1,14 +1,9 @@
 "use client"
-
-import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { X, CreditCard } from 'lucide-react'
-import { loadStripe, StripeCardElement } from '@stripe/stripe-js'
+import { loadStripe } from '@stripe/stripe-js'
 import { 
   Elements, 
   CardElement, 
-  useStripe, 
-  useElements 
 } from '@stripe/react-stripe-js'
 
 import { Button } from "@/components/ui/button"
@@ -17,7 +12,6 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { toast } from "sonner"
 import { RoomType } from '@/utils/types/hotel'
-import axios from 'axios'
 import { useAuthStore } from '@/store/AuthStore'
 import useStripePayment from '@/utils/hooks/useStripepayment'
 

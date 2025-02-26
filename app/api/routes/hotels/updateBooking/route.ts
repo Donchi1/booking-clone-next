@@ -12,7 +12,7 @@ export const PATCH = requireAuth(async (req) => {
     try {
       await Promise.all(bookings.map(async (each: any) => {
         const dbHotel = await Hotels.findOne({ rooms: { $in: [each.id] } });
-        return await dbHotel.updateOne({
+        return await dbHotel?.updateOne({
           $set: {
             totalBookings: Number(dbHotel.totalBookings) + Number(each.totalBookings),
             totalBookPrice: Number(dbHotel.totalBookPrice) + Number(each.totalBookPrice)

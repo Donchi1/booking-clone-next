@@ -1,15 +1,12 @@
 "use client"
 
 import { useState } from 'react'
-import { format } from 'date-fns'
 import {
   Bed,
   Plane,
   Car,
   Landmark,
   CarIcon,
-  CalendarDays,
-  Users
 } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"

@@ -1,5 +1,4 @@
 import {  requireAuth } from '@/app/api/utils/verifyToken';
-// app/api/routes/bookings/create.ts
 import Booking from "@/app/api/models/BookingOrder";
 import { NextRequest, NextResponse } from 'next/server';
 

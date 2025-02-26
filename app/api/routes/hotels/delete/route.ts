@@ -12,7 +12,7 @@ export const DELETE = requireAdmin(async (req) => {
       const hotel = await Hotels.findByIdAndDelete(hotelId);
       if (!hotel) return NextResponse.json({ error: 'Hotel not found' }, { status: 404 });
   
-      const info = await imageDeleteMultiple(hotel.photos.map((each: string) => ({public_id: getPublicId(each)})))
+      const info = await imageDeleteMultiple((hotel?.photos as string[])?.map((each: string) => ({public_id: getPublicId(each)!})))
   
       if (info.error) return NextResponse.json({ error: info.data }, { status: 400 });
       return NextResponse.json({ message: 'Hotel has been deleted' }, { status: 200 });

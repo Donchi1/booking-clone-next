@@ -1,7 +1,7 @@
 // app/main/order/page.tsx
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import Navbar from '@/components/navbar/Navbar';
@@ -52,14 +52,10 @@ export default function OrdersPage() {
   const [bookingId, setBookingId] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
-  const router = useRouter()
-
   // Fetch booking data using React Query
   const {
     data,
     isLoading,
-    error,
-    isError
   } = useQuery<BookingData[]>({
     queryFn: async () => {
       const info = await axios.get(`/api/routes/bookings/getbookingWithUser?userId=${userId}`)

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { QueryClient,  } from "@tanstack/react-query";
 import { LocalQueryClientProvider } from "@/components/LocalQueryClientProvider";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -25,7 +24,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const queryClient = new QueryClient();
   return (
     <html lang="en">
       <body

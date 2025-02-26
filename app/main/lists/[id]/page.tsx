@@ -4,12 +4,10 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
-import { useQuery } from '@tanstack/react-query';
-import { format, differenceInDays } from 'date-fns';
+import { differenceInDays } from 'date-fns';
 import {
   ChevronLeft,
   ChevronRight,
-  X,
   MapPin
 } from 'lucide-react';
 
@@ -27,9 +25,7 @@ import { toast } from 'sonner';
 import { useFetch } from '@/utils/hooks/useFetch';
 import { DatePickerRange } from '@/components/DatePicker';
 import { DateRange } from 'react-day-picker';
-import Link from 'next/link';
 import GuestSelector from '@/components/GuestSelector';
-import { handleGuestChange } from '@/utils/helpers/booking';
 
 // Types for Hotel and Room
 interface Hotel {
