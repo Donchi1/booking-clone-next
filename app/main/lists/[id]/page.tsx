@@ -1,5 +1,6 @@
 // app/main/hotel/page.tsx
 'use client';
+export const dynamic = 'force-dynamic'
 
 import { useState } from 'react';
 import Image from 'next/image';
@@ -55,7 +56,10 @@ export default function HotelPage() {
   const {
     data: hotel,
     isLoading
-  } = useFetch(`/api/routes/hotels/getHotel?hotelId=${hotelId}`) as {
+  } = useFetch(`/api/routes/hotels/getHotel?hotelId=${hotelId}`, 
+    {
+      enabled:!!hotelId
+    }) as {
     data: Hotel;
     isLoading: boolean;
   };

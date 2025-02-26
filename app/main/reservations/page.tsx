@@ -1,6 +1,6 @@
 // app/main/order/page.tsx
 'use client';
-
+export const dynamic = 'force-dynamic'
 import { useSearchParams } from 'next/navigation';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
@@ -16,6 +16,7 @@ import Footer from '@/components/footer/Footer';
 import MailList from '@/components/mailList/MailList';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 import { useState } from 'react';
+import { useAuthStore } from '@/store/AuthStore';
 
 // Type definition for the booking data
 interface BookingData {
@@ -45,9 +46,10 @@ interface BookingData {
 type BookingStatusType = 'pending' | 'completed' | 'rejected' | 'cancelled';
 
 export default function OrdersPage() {
+  const {currentUser} = useAuthStore()
   const queryClient = useQueryClient();
   const searchParams = useSearchParams();
-  const userId = searchParams.get('userId');
+  const userId = searchParams.get('userId') || currentUser?._id;
   const [openCancel, setOpenCancel] = useState(false);
   const [bookingId, setBookingId] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -145,7 +147,7 @@ export default function OrdersPage() {
                 <div className='flex-1'>
                   <div className='flex flex-col gap-4 md:flex-row'>
                     {/* Hotel Image */}
-                    <div className="relative w-full md:w-[55%] h-64">
+                    <div className="relative w-full md:w-[80%] h-64">
                       <Image
                         src={currentBooking?.hotel?.photos[0]}
                         alt={currentBooking?.hotel?.name}
@@ -191,10 +193,10 @@ export default function OrdersPage() {
                   {/* Hotel Photos */}
                   <div className="flex items-center gap-2 mt-4">
                     {currentBooking?.hotel?.photos.slice(0, 3).map((each, idx) => (
-                      <div key={idx} className="w-[80px]">
+                      <div key={idx} className="w-[150px]">
                         <Image
                           src={each}
-                          width={500}
+                          width={700}
                           height={500}
                           alt={`Hotel view ${idx + 1}`}
                           className="object-cover rounded-lg hover:opacity-80 transition"
@@ -241,7 +243,7 @@ export default function OrdersPage() {
 
                   {/* Cancel Button */}
                   <Button
-                    className='bg-primary hover:bg-primary-light text-primary-white'
+                    variant='destructive'
                     disabled={mutation.isPending || currentBooking.booking.status === 'completed' || currentBooking.booking.status === 'cancelled'}
                     onClick={() => {
                       setOpenCancel(true);
