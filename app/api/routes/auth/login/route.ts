@@ -60,7 +60,7 @@ export async function POST(req: NextRequest) {
     });
 
     return response;
-  } catch (err) {
+  } catch (err: any) {
     return createErrorResponse(500, "Login failed");
   }
 }

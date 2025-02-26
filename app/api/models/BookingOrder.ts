@@ -8,7 +8,11 @@ export type BookingType = {
   payment_method?: string;
   currency?: string;
   userId: string;
-  bookedRoomsInfo: any[];
+  bookedRoomsInfo: {
+    selectedRooms: number[];
+    roomTitle: string;
+    price: number;
+  };
   bookedDates: string[];
   totalBookedRooms: number;
 };
