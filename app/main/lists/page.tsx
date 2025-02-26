@@ -10,12 +10,12 @@ import Navbar from '@/components/navbar/Navbar';
 import Header from '@/components/header/Header';
 import SearchItem from '@/components/searchItem/SearchItem';
 
-import { useSearchParams } from 'next/navigation';
 import Filter from '@/components/Filter';
 import { HotelType, SearchFilterParams } from '@/utils/types/hotel';
 import { Skeleton } from '@/components/ui/skeleton';
 import Footer from '@/components/footer/Footer';
 import MailList from '@/components/mailList/MailList';
+import { useMySearchParams } from '@/utils/hooks/useMySearchParams';
 
 // Define types for search parameters and hotel
 
@@ -27,10 +27,12 @@ import MailList from '@/components/mailList/MailList';
 export default function Lists() {
 
     // Get search parameters from URL
-    const propertyType = useSearchParams().get("propertyType")
-    const dates = JSON.parse(useSearchParams().get("dates") || '{}')
-    const options = JSON.parse(useSearchParams().get("options") || '{}')
-    const destination = useSearchParams().get("destination")
+    const propertyType = useMySearchParams().get("propertyType")
+    const dates = JSON.parse(useMySearchParams().get("dates") || '{}')
+    const options = JSON.parse(useMySearchParams().get("options") || '{}')
+    const destination = useMySearchParams().get("destination")
+
+    console.log({propertyType, dates, options, destination})
     
     const [searchParams, setSearchParams] = useState<SearchFilterParams>({
         propertyTypes: propertyType?[propertyType?.toLowerCase() as string]:[],
