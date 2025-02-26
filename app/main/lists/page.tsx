@@ -32,8 +32,6 @@ export default function Lists() {
     const options = JSON.parse(useMySearchParams().get("options") || '{}')
     const destination = useMySearchParams().get("destination")
 
-    console.log({propertyType, dates, options, destination})
-    
     const [searchParams, setSearchParams] = useState<SearchFilterParams>({
         propertyTypes: propertyType?[propertyType?.toLowerCase() as string]:[],
         amenities: [],

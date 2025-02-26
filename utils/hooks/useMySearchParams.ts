@@ -1,33 +1,16 @@
-
-
-
 'use client'
 
-import { useSearchParams } from 'next/navigation'
 import { useMemo } from 'react'
 
 export const useMySearchParams = () => {
-    const searchParams = useSearchParams()
-    
     return useMemo(() => {
-        return {
-            get: (key: string) => {
-                // If searchParams is not available during SSR, return null
-                if (!searchParams) return null
-                return searchParams.get(key)
-            },
-            getAll: (key: string) => {
-                if (!searchParams) return []
-                return searchParams.getAll(key)
-            },
-            has: (key: string) => {
-                if (!searchParams) return false
-                return searchParams.has(key)
-            },
-            toString: () => {
-                if (!searchParams) return ''
-                return searchParams.toString()
-            }
+        // Check if running in browser environment
+        if (typeof window !== 'undefined') {
+            return new URLSearchParams(window.location.search)
         }
-    }, [searchParams])
+        // Return an empty URLSearchParams for server-side or non-browser environments
+        return new URLSearchParams()
+    }, [])
+
+
 }
