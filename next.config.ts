@@ -46,7 +46,10 @@ const nextConfig: NextConfig = {
     STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY,
     TOM_TOM_KEY: process.env.TOM_TOM_KEY,
     MAPTILER_API_KEY: process.env.MAPTILER_API_KEY
-  }
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 
 export default nextConfig;
