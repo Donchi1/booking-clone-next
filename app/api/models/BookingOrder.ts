@@ -1,5 +1,19 @@
 import mongoose from "mongoose";
-const BookingSchema = new mongoose.Schema({
+export type BookingType = {
+  hotelId: string;
+  totalNights: number;
+  totalPrice: number;
+  prices: number[];
+  status: string;
+  payment_method?: string;
+  currency?: string;
+  userId: string;
+  bookedRoomsInfo: any[];
+  bookedDates: string[];
+  totalBookedRooms: number;
+};
+
+const BookingSchema = new mongoose.Schema<BookingType>({
   hotelId: {
     type: String,
     required: true,
@@ -35,6 +49,6 @@ const BookingSchema = new mongoose.Schema({
  
 }, {timestamps: true });
 
-export const Bookings = mongoose.models.Bookings || mongoose.model("Bookings", BookingSchema);
+export const Bookings = mongoose.models.Bookings as mongoose.Model<BookingType> || mongoose.model("Bookings", BookingSchema);
 
 export default Bookings

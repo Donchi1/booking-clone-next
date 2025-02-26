@@ -1,6 +1,6 @@
 // app/api/routes/bookings/lastSixMonths.ts
 import { requireAdmin } from "@/app/api/utils/verifyToken.js";
-import Booking from "../../../models/BookingOrder.js";
+import Booking from "@/app/api/models/BookingOrder";
 import { NextResponse } from 'next/server';
 
 export const GET = requireAdmin(async () => {
