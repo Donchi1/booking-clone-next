@@ -1,0 +1,42 @@
+.accordLinkContainer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1240px;
+    margin: 1rem auto 0 auto;
+  }
+  .accordLinks{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+  .linkF{
+    font-weight: 500;
+    border: 1px solid #0071c2;
+    font-weight: bold;
+    padding: 6px 5px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .accordBackButton{
+    background-color: #0071c2;
+    color: white;
+    font-weight: bold;
+    padding: 10px 5px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+
+  @media (max-width: 768px) {
+
+    .accordLinkContainer{
+        width: 90%;
+        margin: 0auto ;
+      }
+    
+  
+  }
