@@ -280,7 +280,7 @@ export default function ProfilePage() {
                 </Card>
 
                 <div className=" mt-4 flex justify-between">
-                    <Link href={`/main/reservations?userId=${currentUser?._id}`} >
+                    <Link href={`/main/reservations`} >
                         <Button variant="outline">My Bookings</Button>
                     </Link>
                     <Button disabled={isPending} variant="destructive" onClick={() => mutateAsync()}>

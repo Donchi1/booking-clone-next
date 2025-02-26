@@ -59,7 +59,7 @@ export default function Navbar() {
                   Profile
                 </DropdownMenuItem>
                 <DropdownMenuItem 
-                  onSelect={() => router.push(`/main/reservations?userId=${user?._id}`)}
+                  onSelect={() => router.push(`/main/reservations`)}
                   className="cursor-pointer"
                 >
                   <BookOpen className="mr-2 h-4 w-4" />

@@ -1,7 +1,6 @@
 // app/main/order/page.tsx
 'use client';
-export const dynamic = 'force-dynamic'
-import { useSearchParams } from 'next/navigation';
+
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import Navbar from '@/components/navbar/Navbar';
@@ -48,8 +47,6 @@ type BookingStatusType = 'pending' | 'completed' | 'rejected' | 'cancelled';
 export default function OrdersPage() {
   const {currentUser} = useAuthStore()
   const queryClient = useQueryClient();
-  const searchParams = useSearchParams();
-  const userId = searchParams.get('userId') || currentUser?._id;
   const [openCancel, setOpenCancel] = useState(false);
   const [bookingId, setBookingId] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -60,11 +57,11 @@ export default function OrdersPage() {
     isLoading,
   } = useQuery<BookingData[]>({
     queryFn: async () => {
-      const info = await axios.get(`/api/routes/bookings/getbookingWithUser?userId=${userId}`)
-      return info.data;
+      const response = await axios.get(`/api/routes/bookings/getbookingWithUser?userId=${currentUser?._id}`)
+      return  Array.isArray(response.data) ? response.data : [];
     },
-    queryKey: ['bookings', userId],
-    enabled: !!userId
+    queryKey: ['bookings',currentUser?._id],
+    enabled: !!currentUser?._id
   });
 
   const mutation = useMutation({
