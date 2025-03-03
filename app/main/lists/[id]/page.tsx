@@ -53,6 +53,8 @@ export default function HotelPage() {
   const { dates, options, setDates, setOptions } = useSearchStore();
   const { data: user, } = useCurrentUser();
   // Fetch hotel details
+
+
   const {
     data: hotel,
     isLoading

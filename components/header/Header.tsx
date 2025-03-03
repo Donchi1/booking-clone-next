@@ -42,8 +42,6 @@ export default function Header({ type = "default" }) {
   // } as DateRange)
 
 
-  const [guests, setGuests] = useState(options)
-
 
   const handleSearch = (e: React.FormEvent) => {
        e.preventDefault()

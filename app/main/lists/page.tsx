@@ -30,9 +30,8 @@ export default function Lists() {
     // Get search parameters from URL
     const searchParams = useSearchParams()
     const propertyType = searchParams?.get("propertyType") || undefined
-    const dates = searchParams?.get("dates") ? JSON.parse(searchParams.get("dates")!) : {}
-    const options = searchParams?.get("options") ? JSON.parse(searchParams.get("options")!) : {}
     const destination = searchParams?.get("destination") || undefined
+
 
     const [searchFilterParams, setSearchFilterParams] = useState<SearchFilterParams>({
         propertyTypes: propertyType?[propertyType?.toLowerCase() as string]:[],
@@ -86,8 +85,6 @@ export default function Lists() {
                                     <SearchItem
                                         key={hotel._id}
                                         item={hotel}
-                                        dates={dates}
-                                        options={options}
                                     />
                                 )) :
                                     <div className="text-center text-red-600 h-screen flex justify-center items-center">

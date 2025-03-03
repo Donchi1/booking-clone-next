@@ -21,7 +21,7 @@ interface SearchState {
 export const useSearchStore = create<SearchState>()(
   persist(
     (set) => ({
-      destination: undefined,
+      destination: "",
       dates: [{ from: new Date(), to: new Date() } as DateRange],
       options: {
         adults: 1,

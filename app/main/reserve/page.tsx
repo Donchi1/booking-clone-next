@@ -42,8 +42,13 @@ export default function ReservePage() {
   // Fetch rooms data
   const { data: rooms, isLoading, error } = useQuery<Room[]>({
     queryKey: ['hotelRooms', hotelId || ""],
-    queryFn: async () => axios.get(`/api/routes/hotels/getRooms?hotelId=${hotelId}`).then(res => res.data),
-    enabled: true
+    queryFn: async () => {
+      if (!hotelId) {
+        throw new Error("No hotel ID provided");
+      }
+      return axios.get(`/api/routes/hotels/getRooms?hotelId=${hotelId}`).then(res => res.data);
+    },
+    enabled: !!hotelId  // This will prevent the query from running if hotelId is undefined
   });
 
   const { selectedRooms, handleSelect, isAvailable, availableDates, selectedRoomNumbers, getRooms } = useRoomInfo(rooms as RoomType[]);

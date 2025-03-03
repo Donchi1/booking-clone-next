@@ -12,17 +12,10 @@ import { DateRange } from 'react-day-picker'
 import { OptionType } from '@/utils/types/hotel'
 
 export default function SearchItem({ 
-  item, 
-  dates,
-  options
+  item
 }:{
   item: any,
-  dates: DateRange
-  options:OptionType
 }) {
-  const {setDates,setOptions} = useSearchStore();
-  
-
 
   return (
     <Card className="flex md:flex-row flex-col  overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
@@ -86,10 +79,10 @@ export default function SearchItem({
 
           <Link 
             href={`/main/lists/${item._id}`} 
-            onClick={() => {
-              setDates([dates])
-              setOptions(options)
-            }}
+            // onClick={() => {
+            //   setDates([dates])
+            //   setOptions(options)
+            // }}
           >
             <Button className='bg-primary hover:bg-primary-light text-primary-white'>
               See Availability
