@@ -2,7 +2,7 @@
 export const dynamic = 'force-dynamic';
 
 import { Suspense, useState } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -16,7 +16,7 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import StripePayment from '@/components/stripe/StripePayment';
 import { RoomType, RoomNumberType } from '@/utils/types/hotel';
-import { useMySearchParams } from '@/utils/hooks/useMySearchParams';
+
 
 // Types
 interface Room {
@@ -34,7 +34,7 @@ export default function ReservePage() {
   const router = useRouter();
 
   // Get search parameters from URL
-  const hotelId = useMySearchParams().get('hotelId');
+  const hotelId = useSearchParams()?.get('hotelId') || undefined;
 
   const { currentUser, setPreviousUrl } = useAuthStore();
   const [openPay, setOpenPay] = useState(false);

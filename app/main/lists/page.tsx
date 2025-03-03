@@ -15,7 +15,8 @@ import { HotelType, SearchFilterParams } from '@/utils/types/hotel';
 import { Skeleton } from '@/components/ui/skeleton';
 import Footer from '@/components/footer/Footer';
 import MailList from '@/components/mailList/MailList';
-import { useMySearchParams } from '@/utils/hooks/useMySearchParams';
+import { useSearchParams } from 'next/navigation';
+
 
 // Define types for search parameters and hotel
 
@@ -27,18 +28,19 @@ import { useMySearchParams } from '@/utils/hooks/useMySearchParams';
 export default function Lists() {
 
     // Get search parameters from URL
-    const propertyType = useMySearchParams().get("propertyType")
-    const dates = JSON.parse(useMySearchParams().get("dates") || '{}')
-    const options = JSON.parse(useMySearchParams().get("options") || '{}')
-    const destination = useMySearchParams().get("destination")
+    const searchParams = useSearchParams()
+    const propertyType = searchParams?.get("propertyType") || undefined
+    const dates = searchParams?.get("dates") ? JSON.parse(searchParams.get("dates")!) : {}
+    const options = searchParams?.get("options") ? JSON.parse(searchParams.get("options")!) : {}
+    const destination = searchParams?.get("destination") || undefined
 
-    const [searchParams, setSearchParams] = useState<SearchFilterParams>({
+    const [searchFilterParams, setSearchFilterParams] = useState<SearchFilterParams>({
         propertyTypes: propertyType?[propertyType?.toLowerCase() as string]:[],
         amenities: [],
         minPrice: 1,
         maxPrice: 1000
     })
-     const { propertyTypes, amenities, minPrice, maxPrice } = searchParams
+     const { propertyTypes, amenities, minPrice, maxPrice } = searchFilterParams
     // Fetch hotels using React Query
     const {
         data: hotels,
@@ -72,7 +74,7 @@ export default function Lists() {
                 <div className=" py-8">
                     <div className="flex flex-col  md:flex-row gap-8 ">
                         <div className="w-full md:w-1/4">
-                            <Filter setFilterParams={setSearchParams} hotels={hotels!} filterParams={searchParams} />
+                            <Filter setFilterParams={setSearchFilterParams} hotels={hotels!} filterParams={searchFilterParams} />
                         </div>
                         <div className="w-full md:w-3/4 space-y-4">
                             {isLoading ? [...Array(5)].map((_, index) => (
