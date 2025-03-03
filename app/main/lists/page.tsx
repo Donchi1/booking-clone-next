@@ -18,12 +18,6 @@ import MailList from '@/components/mailList/MailList';
 import { useSearchParams } from 'next/navigation';
 
 
-// Define types for search parameters and hotel
-
-
-
-
-
 
 export default function Lists() {
 
@@ -47,6 +41,9 @@ export default function Lists() {
     } = useQuery<HotelType[]>({
         queryKey: ['hotels', propertyType, destination, searchParams],
         queryFn: async () => {
+            if (!destination || !propertyType) {
+                throw new Error("No destination or propertyType ID provided");
+            }
             const { data } = await axios.get('/api/routes/hotels', {
                 params: {
                     propertyType: propertyType?.toLowerCase() || propertyTypes?.length as number> 0 ? (propertyTypes as string[])?.join(','): [],
@@ -65,7 +62,6 @@ export default function Lists() {
 
     return (
         <Suspense>
-
         <div className="min-h-screen bg-gray-50">
             <Navbar />
             <Header type='list' />
