@@ -11,7 +11,6 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
-import { DateRange } from 'react-day-picker'
 import { useRouter } from 'next/navigation'
 import { useSearchStore } from '@/store/SearchStore'
 import { DatePickerRange } from '../DatePicker'

@@ -1,22 +1,20 @@
 'use client';
-export const dynamic = 'force-dynamic';
 
 import { Suspense, useState } from 'react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Badge } from '@/components/ui/badge';
-import { toast } from 'sonner';
-import { useRoomInfo } from '@/utils/hooks/useRoomInfo';
-import { useAuthStore } from '@/store/AuthStore';
 import Navbar from '@/components/navbar/Navbar';
 import Loader from '@/components/loader/loader';
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import StripePayment from '@/components/stripe/StripePayment';
 import { RoomType, RoomNumberType } from '@/utils/types/hotel';
-
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+import { useRoomInfo } from '@/utils/hooks/useRoomInfo';
+import { useAuthStore } from '@/store/AuthStore';
+import { toast } from 'sonner';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Button } from '@/components/ui/button';
 
 // Types
 interface Room {
@@ -28,30 +26,65 @@ interface Room {
   roomNumbers: RoomNumberType[];
 }
 
-
 export default function ReservePage() {
-  const pathname = usePathname();
-  const router = useRouter();
+  return (
+    <>
+      <Navbar />
+      <Suspense fallback={<Loader />}>
+        <SearchParamsClient />
+      </Suspense>
+    </>
+  );
+}
 
-  // Get search parameters from URL
-  const hotelId = useSearchParams()?.get('hotelId') || undefined;
 
-  const { currentUser, setPreviousUrl } = useAuthStore();
+// Separate client component for search params
+function SearchParamsClient() {
+  const searchParams = useSearchParams()
+  const hotelId = searchParams?.get('hotelId') || undefined
+
+  return (
+    <Suspense fallback={<Loader />}>
+      <ReserveDataClient hotelId={hotelId} />
+    </Suspense>
+  );
+}
+
+// Separate client component for data fetching and rendering
+function ReserveDataClient({ hotelId }: { hotelId: string | undefined }) {
   const [openPay, setOpenPay] = useState(false);
 
   // Fetch rooms data
-  const { data: rooms, isLoading, error } = useQuery<Room[]>({
-    queryKey: ['hotelRooms', hotelId || ""],
+  const { 
+    data: rooms, 
+    isLoading, 
+    error 
+  } = useQuery<Room[]>({
+    queryKey: ['hotelRooms', hotelId],
     queryFn: async () => {
-      if (!hotelId) {
-        throw new Error("No hotel ID provided");
+      if (!hotelId) throw new Error("No hotel ID provided");
+      try {
+        const response = await axios.get(`/api/routes/hotels/getRooms?hotelId=${hotelId}`);
+        return response.data;
+      } catch (err) {
+        throw new Error("Failed to fetch hotel rooms");
       }
-      return axios.get(`/api/routes/hotels/getRooms?hotelId=${hotelId}`).then(res => res.data);
     },
-    enabled: !!hotelId  // This will prevent the query from running if hotelId is undefined
+    enabled: !!hotelId
   });
 
-  const { selectedRooms, handleSelect, isAvailable, availableDates, selectedRoomNumbers, getRooms } = useRoomInfo(rooms as RoomType[]);
+  const { 
+    selectedRooms, 
+    handleSelect, 
+    isAvailable, 
+    availableDates, 
+    selectedRoomNumbers, 
+    getRooms 
+  } = useRoomInfo(rooms as RoomType[]);
+
+  const pathname = usePathname();
+  const router = useRouter();
+  const { currentUser, setPreviousUrl } = useAuthStore();
 
   // Open payment modal
   const handlePayModal = () => {
@@ -65,22 +98,20 @@ export default function ReservePage() {
   };
 
   if (isLoading) return <Loader />;
-  //if (error) return <div className="text-center text-red-500 py-8">Error: {error.message}</div>;
+  if (error) return <div className="text-center text-red-500 py-8">Error: {error.message}</div>;
 
   return (
-    <Suspense fallback={<Loader />}>
-      <Navbar />
-      {!rooms || rooms?.length as number < 1 ? (
+    <>
+      {!rooms || rooms.length < 1 ? (
         <div className='noReservation text-center py-10'>
           <h3 className="text-xl font-semibold">No Hotel found</h3>
-        </div>) : (
-
+        </div>
+      ) : (
         <section className="container mx-auto px-4 mb-8">
           <div className="w-full">
             <h2 className="text-2xl font-bold my-4">Select your rooms</h2>
-
             <div className="grid gap-4 py-4">
-              {rooms?.length as number > 0 && rooms?.map((room) => (
+              {rooms.map((room) => (
                 <Card key={room._id} className="w-full">
                   <CardHeader>
                     <CardTitle className="flex justify-between items-center">
@@ -99,7 +130,7 @@ export default function ReservePage() {
                               id={roomNumber._id}
                               checked={selectedRooms.includes(roomNumber?._id!)}
                               onCheckedChange={(checked) =>
-                                handleSelect(!!checked, roomNumber._id!, room._id, roomNumber.number, room)
+                                handleSelect(!!checked, roomNumber?._id!, room._id, roomNumber.number, room)
                               }
                               disabled={!isAvailable(roomNumber)}
                             />
@@ -117,7 +148,6 @@ export default function ReservePage() {
                 </Card>
               ))}
             </div>
-
             <Button onClick={handlePayModal} className="w-full">Reserve Now!</Button>
           </div>
         </section>
@@ -135,6 +165,6 @@ export default function ReservePage() {
           selectedRoomNumbers={selectedRoomNumbers}
         />
       )}
-    </Suspense>
+    </>
   );
 }

@@ -37,14 +37,23 @@ export const useSearchStore = create<SearchState>()(
     {
       name: 'search-storage',
       storage: createJSONStorage(() => localStorage),
-      merge: (persisted, latest) => ({
-        ...latest,
-        dates: latest.dates.map((date, index) => ({
-          ...date,
-          from: new Date(date.from!),
-          to: new Date(date.to!)
-        }))
-      })
+      merge: (persisted: any, latest) => {
+        // Ensure dates are properly parsed and converted to Date objects
+        const mergedDates = (persisted?.dates || latest.dates || []).map((date: DateRange) => ({
+          from: date.from ? new Date(date.from) : new Date(),
+          to: date.to ? new Date(date.to) : new Date()
+        }));
+
+        return {
+          ...latest,
+          destination: persisted?.destination || latest.destination || "",
+          dates: mergedDates,
+          options: {
+            ...latest.options,
+            ...(persisted?.options || {})
+          }
+        };
+      }
     }
   )
 );
